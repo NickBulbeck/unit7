@@ -8,21 +8,10 @@
 
   <body>
     <div id="root"></div>
-    <div id="root2"></div>
-<!-- These lines are the CDN (content delivery network) addresses for React.
-     They're a bit like the jQuery import tag you use when you're using that. The reason there's
-     two separate packages is historical. react.development is for building apps in the browser,
-     and react-dom.development is for customising for different machines and manipulating the
-     DOM to that end. This will probably become clearer over time.
-     Note also that, at the time of writing, we're on version 16. This changes frequently! -->
+
     <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-<!-- This is a clunky way of including babel. It's no good for a production environment, 
-     as the file is too large. But it'll do for now. Babel will transpile our JSX code (fae
-     app.js) into actual JavaScript that the browser can use. We also need to add the 'type'
-     attribute to our app.js tag. This signals to the babel script above it that the stuff in
-     app.js should be transpiled before it's executed. -->
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <script crossorigin type="text/babel" src="./app.js"></script>
+    <script type="text/babel" src="./app.js"></script>
   </body>
 </html>
