@@ -1,10 +1,11 @@
 {
   "name": "reactbasandcomp",
   "version": "0.1.0",
-  "description": "React router course",
+  "description": "React Basics and React Components courses",
   "main": "app.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start": "http-server --cors"
   },
   "repository": {
     "type": "git",
