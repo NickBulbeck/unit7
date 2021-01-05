@@ -4,7 +4,8 @@
   "description": "React Basics and React Components courses",
   "main": "app.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start": "http-server --cors"
   },
   "repository": {
     "type": "git",
