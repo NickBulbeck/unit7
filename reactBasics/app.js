@@ -1,12 +1,7 @@
-// And Now: Components.
-// A React component is analogous to a JavaScript function, pure and simple. It's a re-usable
-// bit of UI. Components aren't written in a templating language (like Pug); just plain JavaScript
-// with JSX. Liking it so far.
+// And Now: properties.
+// We'll re-do the Header component dynamically using 
 
-// You can define a component as either a function or a class. We'll do functions
-// first. 
-
-const Header1 = () => { // Must have a capital letter
+const Header = () => { // Must have a capital letter
   return ( // when you wrap multiple lines of JSX in (), it avoids automatic
     <header> {/*semicolon insertion bother - JavaScript autoinserts a semicolon as*/}
       <h1>Scoreboard</h1> {/*soon as meaningfully possible after a return statement */}
