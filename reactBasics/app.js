@@ -10,26 +10,36 @@
     the value of a prop from within a Component. They're strictly read-only.
 */
 
+// Note the 'id' property in each object. If you don't add this, React gives you a warning 
+// about it. React components need unique keys before they can be manipulated (i.e. moved,
+// deleted etc). More specifically, elements that would be selected together - that is, where
+// there's more than one of them - should have a unique key, and particularly when you create
+// them in the process of iterating over a collection of some kind.
 const players = [
   {
     name: "Nick",
-    score: "Autism"
+    score: 42,
+    id: 1
   },
   {
     name: "Guil",
-    score: 50
+    score: 50,
+    id: 2
   },
   {
     name: "Treasure",
-    score: 85
+    score: 85,
+    id: 3
   },
   {
     name: "Ashley",
-    score: 95
+    score: 95,
+    id: 4
   },
   {
     name: "James",
-    score: 80
+    score: 80,
+    id: 5
   }
 ]
 
@@ -73,27 +83,37 @@ const Player = (props) => {
 // REMEMBER: in the parent component, the child component is called, like a function. So you pass
 // IN the props in the calling function, and then PROCESS them in the const Component = (props) => {}
 // part.
-
-const App = () => {
+// You generally use the map() function to iterate over an array of props. Here, since there's 
+// only a single statement (albeit spread over several lines) we're using an implicit return
+// arrow function.
+const App = (props) => {
   return (
     <div className="scoreboard">
       <Header
         title="Scoreboard"
-        totalPlayers={1}
+        totalPlayers={props.initialPlayers.length}
     />
       {/* Players list - could have a long list of <Player />'s, but we'll use an array*/}
-      <Player name="Nick" score={50} />
-      <Player name="Guil" score={40} />
-      <Player name="Ashley" score={44} />
-      <Player name="James" score={58} />
+      {props.initialPlayers.map( player => 
+        <Player
+          name={player.name}
+          score={player.score}
+          key={player.id.toString()}
+        />
+      )}
     </div>
   )
 }
+// If you inspect the app in Chrome React devtools, you'll see that the 'key' property (which, BTW,
+// React recommends you use a string for) is not listed with the rest of the props but attached to
+// the element itself. This makes more sense in Chrome React devtools than it does written here.
+
+
 // It's customary to use double-quotes for strings, as that's what folk tend to use
 // in HTML itself. Also, you don't have to put multiple props on different lines, as with
 // <Header /> here, but it's a good idea.
 
 ReactDOM.render(
-  <App />, 
+  <App initialPlayers={players}/>, 
   document.getElementById('root') 
 ); 
