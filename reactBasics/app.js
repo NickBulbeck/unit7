@@ -63,6 +63,7 @@ const Player = (props) => {
     </div>
   )
 }
+
 // Single containing element is up next. Remember, App() is a bit like the wrapper div.
 // Notice how we pass the props in, and note the continuing analogy to HTML
 // attributes. Anything other than a string has to be enclosed in {} so that JSX
@@ -72,6 +73,7 @@ const Player = (props) => {
 // REMEMBER: in the parent component, the child component is called, like a function. So you pass
 // IN the props in the calling function, and then PROCESS them in the const Component = (props) => {}
 // part.
+
 const App = () => {
   return (
     <div className="scoreboard">
