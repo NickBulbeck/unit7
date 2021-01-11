@@ -1,69 +1,97 @@
-// And Now: Components.
-// A React component is analogous to a JavaScript function, pure and simple. It's a re-usable
-// bit of UI. Components aren't written in a templating language (like Pug); just plain JavaScript
-// with JSX. Liking it so far.
+// And Now: Props.
 
-// You can define a component as either a function or a class. We'll do functions
-// first. 
+/* 
+    Props are like HTML attributes; they're actually passed into the function as
+    a parameter. The props parameter is very like the event parameter passed to 
+    element.addEventListener - it's created by JavaScript and is always there 
+    implicitly, so in order to access it you just need to stick a foadyb name
+    on it. By convention, stick to 'props'.
+    It's an object, as you can see by console.logging it. And note: you CANNOT change
+    the value of a prop from within a Component. They're strictly read-only.
+*/
 
-const Header = () => { // Must have a capital letter
-  return ( // when you wrap multiple lines of JSX in (), it avoids automatic
-    <header> {/*semicolon insertion bother - JavaScript autoinserts a semicolon as*/}
-      <h1>Scoreboard</h1> {/*soon as meaningfully possible after a return statement */}
-      <span className="stats">Players: 1</span>
+const players = [
+  {
+    name: "Nick",
+    score: "Autism"
+  },
+  {
+    name: "Guil",
+    score: 50
+  },
+  {
+    name: "Treasure",
+    score: 85
+  },
+  {
+    name: "Ashley",
+    score: 95
+  },
+  {
+    name: "James",
+    score: 80
+  }
+]
+
+const Header = (props) => {
+  return (
+    <header>
+      <h1>{ props.title }</h1>
+      <span className="stats">Players: { props.totalPlayers }</span>
     </header>
-  )
+  );
 }
-// Because it's an arrow function with a single statement (albeit over multiple lines),
-// a lot of folk abbreviate it by missing out the 'return' and/or the brackets.
-// Bugger this. I'm sticking to the above (so is Guil, BTW).
 
-// You can add user-defined tags in React, so that instead of having to .render a
-// p or h1 etc tag, or a variable representing such a tag, you render a component tag
-// thus:
-
-const Counter = () => {
+const Counter = (props) => {
   return (
     <div className="counter">
       <button className="counter-action decrement"> - </button>
-      <span className="counter-score">35</span>
+      <span className="counter-score">{ props.score }</span>
       <button className="counter-action increment"> + </button>
     </div>
-  )
+  );
 }
 
-const Player = () => {
+
+const Player = (props) => {
   return (
     <div className="player">
       <span className="player-name">
-        Nick
+        {props.name}
       </span>
-      <Counter />
+      <Counter score={props.score}/>
     </div>
   )
 }
-// When one component contains one or more others, it's called 'composition'.
-// It's typical to have one containing component, analogous to the 'wrapper' 
-// div in HTML...
+// Single containing element is up next. Remember, App() is a bit like the wrapper div.
+// Notice how we pass the props in, and note the continuing analogy to HTML
+// attributes. Anything other than a string has to be enclosed in {} so that JSX
+// evaluates it. But - and this is maybe a bit clever - you can even have them as
+// functions, including declaring them as wee arrow functions to do small bits of 
+// arithmetic in situ (say, taking a number and doubling it or adding 1 to it).
+// REMEMBER: in the parent component, the child component is called, like a function. So you pass
+// IN the props in the calling function, and then PROCESS them in the const Component = (props) => {}
+// part.
 const App = () => {
   return (
     <div className="scoreboard">
-      <Header />
-      {/* Players list */}
-      <Player />
+      <Header
+        title="Scoreboard"
+        totalPlayers={1}
+    />
+      {/* Players list - could have a long list of <Player />'s, but we'll use an array*/}
+      <Player name="Nick" score={50} />
+      <Player name="Guil" score={40} />
+      <Player name="Ashley" score={44} />
+      <Player name="James" score={58} />
     </div>
   )
 }
-
+// It's customary to use double-quotes for strings, as that's what folk tend to use
+// in HTML itself. Also, you don't have to put multiple props on different lines, as with
+// <Header /> here, but it's a good idea.
 
 ReactDOM.render(
-  <App />, // The name must exactly match the component.
-  document.getElementById('root') // Hence the need for a capital H in Header;
-); // without it, JSX would assume you're trying to render an html tag.
-// You can self-close the tag, or use <Header></Header> if it has children.
-
-// Finally on <Header /> : The space is not required, but is recommended.
-// Also note that <Header /> is a function call - it calls the Header() function,
-// which means that when it's executed, any side-effects of Header() would become
-// manifest. Also it's transpiled into a series of React.createElement's - you can
-// see this if you copy the wee function above into repl.
+  <App />, 
+  document.getElementById('root') 
+); 
