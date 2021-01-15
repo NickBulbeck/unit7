@@ -1,20 +1,17 @@
-// And Now: Props.
-
-/* 
-    Props are like HTML attributes; they're actually passed into the function as
-    a parameter. The props parameter is very like the event parameter passed to 
-    element.addEventListener - it's created by JavaScript and is always there 
-    implicitly, so in order to access it you just need to stick a foadyb name
-    on it. By convention, stick to 'props'.
-    It's an object, as you can see by console.logging it. And note: you CANNOT change
-    the value of a prop from within a Component. They're strictly read-only.
+// And Now: State.
+/*
+  Props are read-only; state is alterable within each component.
+  State, like props, is a nobject with its own foadyb properties.
+  It keeps the UI in synch with the data.
+  In order to add a state object, you need to declare the component
+  as a class rather than a function (a stateless functional component).
+  We did props first, because state is passed into components via 
+  props. Makes sense, as 'state' is a property, after all.
+  A component can change its own state, but not the state of any other
+  component. By contrast, a component cannot change its own props, but
+  can set the props of its children.
 */
 
-// Note the 'id' property in each object. If you don't add this, React gives you a warning 
-// about it. React components need unique keys before they can be manipulated (i.e. moved,
-// deleted etc). More specifically, elements that would be selected together - that is, where
-// there's more than one of them - should have a unique key, and particularly when you create
-// them in the process of iterating over a collection of some kind.
 const players = [
   {
     name: "Nick",
@@ -52,14 +49,24 @@ const Header = (props) => {
   );
 }
 
-const Counter = (props) => {
-  return (
-    <div className="counter">
-      <button className="counter-action decrement"> - </button>
-      <span className="counter-score">{ props.score }</span>
-      <button className="counter-action increment"> + </button>
-    </div>
-  );
+// So, Counter written as a component class. It's a child of the React.Component
+// class, so you need the 'extends' keyword. Also, its props aren't passed to it
+// as a nargument like they were with the Component functions; the props are a 
+// property of the Counter instance, so you need the 'this' when you access them.
+// Note that you need just one method, wihich is the render() method and contains 
+// the same code as you'd see in the function version.
+// Note also that you instantiate it just as though you're calling a function -
+// send in the props and dinnae bother with 'new'.
+class Counter extends React.Component {
+  render() {
+    return (
+      <div className="counter">
+        <button className="counter-action decrement"> - </button>
+        <span className="counter-score">{ this.props.score }</span>
+        <button className="counter-action increment"> + </button>
+      </div>
+    );
+  }
 }
 
 
@@ -74,18 +81,7 @@ const Player = (props) => {
   )
 }
 
-// Single containing element is up next. Remember, App() is a bit like the wrapper div.
-// Notice how we pass the props in, and note the continuing analogy to HTML
-// attributes. Anything other than a string has to be enclosed in {} so that JSX
-// evaluates it. But - and this is maybe a bit clever - you can even have them as
-// functions, including declaring them as wee arrow functions to do small bits of 
-// arithmetic in situ (say, taking a number and doubling it or adding 1 to it).
-// REMEMBER: in the parent component, the child component is called, like a function. So you pass
-// IN the props in the calling function, and then PROCESS them in the const Component = (props) => {}
-// part.
-// You generally use the map() function to iterate over an array of props. Here, since there's 
-// only a single statement (albeit spread over several lines) we're using an implicit return
-// arrow function.
+
 const App = (props) => {
   return (
     <div className="scoreboard">
@@ -104,14 +100,7 @@ const App = (props) => {
     </div>
   )
 }
-// If you inspect the app in Chrome React devtools, you'll see that the 'key' property (which, BTW,
-// React recommends you use a string for) is not listed with the rest of the props but attached to
-// the element itself. This makes more sense in Chrome React devtools than it does written here.
 
-
-// It's customary to use double-quotes for strings, as that's what folk tend to use
-// in HTML itself. Also, you don't have to put multiple props on different lines, as with
-// <Header /> here, but it's a good idea.
 
 ReactDOM.render(
   <App initialPlayers={players}/>, 
