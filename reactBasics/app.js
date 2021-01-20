@@ -57,30 +57,51 @@ const Header = (props) => {
 // the same code as you'd see in the function version.
 // Note also that you instantiate it just as though you're calling a function -
 // send in the props and dinnae bother with 'new'.
+// More: you need a constructor, and you call super() which calls the parent class
+// constructor so that you can use the 'this' keyword. You initialise the state
+// by setting this.state as a nobject ('state' is compulsory, not foadyb) and you
+// must also set an initial value for every property in the state.
 class Counter extends React.Component {
+
+  constructor() {   // the render() method below is a function of both
+    super();        // props and state, so if either changes, render()
+    this.state = {  // is called.
+      score: 0
+    }
+  }
+  // Another way of doing this, that is transpiled by babel but not directly 
+  // supported in all browsers yet, is the class property shortcut:
+  // state = {
+  //   score:0 
+  // }
+  // If you do this, babel sets up the constructor() business behind the scenes.
   render() {
     return (
       <div className="counter">
         <button className="counter-action decrement"> - </button>
-        <span className="counter-score">{ this.props.score }</span>
+        <span className="counter-score">{ this.state.score }</span>
         <button className="counter-action increment"> + </button>
       </div>
     );
   }
 }
 
-
+// wo the previous version, 'score' is no longer being passed in props to the
+// Counter component, because it now maintains its own score state.
 const Player = (props) => {
   return (
     <div className="player">
       <span className="player-name">
         {props.name}
       </span>
-      <Counter score={props.score}/>
+      <Counter />
     </div>
   )
 }
 
+// As with Player above:
+// wo the previous version, 'score' is no longer being passed in props to the
+// Counter component, because it now maintains its own score state.
 
 const App = (props) => {
   return (
@@ -93,7 +114,6 @@ const App = (props) => {
       {props.initialPlayers.map( player => 
         <Player
           name={player.name}
-          score={player.score}
           key={player.id.toString()}
         />
       )}
