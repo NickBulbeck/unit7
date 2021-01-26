@@ -1,44 +1,24 @@
-// And Now: State.
-/*
-  Props are read-only; state is alterable within each component.
-  State, like props, is a nobject with its own foadyb properties.
-  It keeps the UI in synch with the data.
-  In order to add a state object, you need to declare the component
-  as a class rather than a function (a stateless functional component).
-  We did props first, because state is passed into components via 
-  props. Makes sense, as 'state' is a property, after all.
-  A component can change its own state, but not the state of any other
-  component. By contrast, a component cannot change its own props, but
-  can set the props of its children.
+// And Now: types of state.
+// There are two types of state to think about when designing an app. There's 
+// application state, and component state. The former is the data available
+// to the entire application. Component state is local to the component and is
+// not visible outside it. Like global and local variables.
+
+/* 
+  There's a basic pitfall with the setState() method: it's asynchronous. React tends to
+  bundle setState() calls together and then run them at once for performance reasons.
+  So you can get race conditions. In other words, when you increment the counter (for 
+  instance) by increasing the current value of this.state.score, you can't guarrantee what
+  the current value is (suppose a lot of - and + button clicks happen in quick succession).
+
+  Thus, instead of just a nobject, setState() can also accept a callback that sets state
+  based on the previous state.
+
+  The other thing we're doing here is removing items from the state, and specifically, 
+  removing players. 
+
 */
 
-const players = [
-  {
-    name: "Nick",
-    score: 42,
-    id: 1
-  },
-  {
-    name: "Guil",
-    score: 50,
-    id: 2
-  },
-  {
-    name: "Treasure",
-    score: 85,
-    id: 3
-  },
-  {
-    name: "Ashley",
-    score: 95,
-    id: 4
-  },
-  {
-    name: "James",
-    score: 80,
-    id: 5
-  }
-]
 
 const Header = (props) => {
   return (
@@ -49,49 +29,53 @@ const Header = (props) => {
   );
 }
 
-// So, Counter written as a component class. It's a child of the React.Component
-// class, so you need the 'extends' keyword. Also, its props aren't passed to it
-// as a nargument like they were with the Component functions; the props are a 
-// property of the Counter instance, so you need the 'this' when you access them.
-// Note that you need just one method, wihich is the render() method and contains 
-// the same code as you'd see in the function version.
-// Note also that you instantiate it just as though you're calling a function -
-// send in the props and dinnae bother with 'new'.
-// More: you need a constructor, and you call super() which calls the parent class
-// constructor so that you can use the 'this' keyword. You initialise the state
-// by setting this.state as a nobject ('state' is compulsory, not foadyb) and you
-// must also set an initial value for every property in the state.
+
 class Counter extends React.Component {
 
-  constructor() {   // the render() method below is a function of both
-    super();        // props and state, so if either changes, render()
-    this.state = {  // is called.
-      score: 0
+    state = {
+      score:0 
     }
+  
+// In the callback, prevState works rather like the 'event' variable in an
+// event-listener. It's there by default whether you name it or not; giving it
+// a (foadyb) name enables you to access it.
+  incrementScore() {
+    this.setState( prevState => {
+      return {
+        score: prevState.score + 1
+      }
+    });
   }
-  // Another way of doing this, that is transpiled by babel but not directly 
-  // supported in all browsers yet, is the class property shortcut:
-  // state = {
-  //   score:0 
-  // }
-  // If you do this, babel sets up the constructor() business behind the scenes.
+
+  decrementScore = () => {
+    this.setState( prevState => {
+      return {
+        score: prevState.score - 1
+      }
+    })
+  }
+
+
   render() {
+
     return (
       <div className="counter">
-        <button className="counter-action decrement"> - </button>
-        <span className="counter-score">{ this.state.score }</span>
-        <button className="counter-action increment"> + </button>
+        <button className="counter-action decrement" onClick={this.decrementScore}> - </button>
+        <span className="counter-score">{this.state.score}</span>
+        <button className="counter-action increment" onClick={this.incrementScore.bind(this)}> + </button>
       </div>
     );
   }
 }
 
-// wo the previous version, 'score' is no longer being passed in props to the
-// Counter component, because it now maintains its own score state.
+
+// Note the arrow-function syntax on the onClick function - we're declaring an arrow function
+// inside the code here which returns a call to props.removePlayer(), so it DOES need the brackets.
 const Player = (props) => {
   return (
     <div className="player">
       <span className="player-name">
+        <button className="remove-player" onClick={ () => props.removePlayer(props.id) }>✖</button>
         {props.name}
       </span>
       <Counter />
@@ -99,30 +83,70 @@ const Player = (props) => {
   )
 }
 
-// As with Player above:
-// wo the previous version, 'score' is no longer being passed in props to the
-// Counter component, because it now maintains its own score state.
+// App owns the Player components, so it'll be responsible for handling the 
+// Player-related state. This means it has to be a stateful component which, in 
+// turn, means it has to be a class.
+class App extends React.Component {
 
-const App = (props) => {
-  return (
-    <div className="scoreboard">
-      <Header
-        title="Scoreboard"
-        totalPlayers={props.initialPlayers.length}
-    />
-      {/* Players list - could have a long list of <Player />'s, but we'll use an array*/}
-      {props.initialPlayers.map( player => 
-        <Player
-          name={player.name}
-          key={player.id.toString()}
-        />
-      )}
-    </div>
-  )
+  state = {
+    players: [
+      {
+        name: "Nick",
+        id: 1
+      },
+      {
+        name: "Guil",
+        id: 2
+      },
+      {
+        name: "Treasure",
+        id: 3
+      },
+      {
+        name: "Ashley",
+        id: 4
+      },
+      {
+        name: "James",
+        id: 5
+      }
+    ]
+  }
+// use the array.filter method to remove the player with the given id;
+// we'll also pass this method to the Player child class via props
+  handleRemovePlayer = (id) => {
+    this.setState( prevState => {
+      return  {
+        players: prevState.players.filter( player => player.id !== id)
+      }
+    });
+  }
+// As stated above: we'll pass the handleRemovePlayer method as a prop, 
+// as well as the player's id
+  render() {
+    return (
+      <div className="scoreboard">
+        <Header
+          title="Scoreboard"
+          totalPlayers={this.state.players.length}
+      />
+        {this.state.players.map( player => 
+          <Player
+            name={player.name}
+            id={player.id}
+            key={player.id.toString()}
+            removePlayer={this.handleRemovePlayer}
+          />
+        )}
+      </div>
+    )
+  }
+
+  
 }
 
 
 ReactDOM.render(
-  <App initialPlayers={players}/>, 
+  <App />, 
   document.getElementById('root') 
 ); 
