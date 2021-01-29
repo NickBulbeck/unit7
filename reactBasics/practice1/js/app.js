@@ -76,4 +76,9 @@ const planets = [
 //    and renders a 'Planet' component for each object in the array 
 
 
+
 // 3: Render the container component to the DOM
+
+
+// Start the server with http-server --cors -p 8000 -c-1
+// -c-1 prevents caching.
