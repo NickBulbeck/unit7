@@ -1,3 +1,8 @@
+// To begin with, this file (App.js) was the only one in the src/components folder. However,
+// it contained all of the components. The first exercise, therefore, was to extract the function
+// components into separate files (each with an import statement here and an export statement in
+// the new file). The second was to extract the class components likewise.
+
 import React from 'react';
 
 const Header = (props) => {
