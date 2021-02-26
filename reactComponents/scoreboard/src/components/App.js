@@ -2,60 +2,16 @@
 // it contained all of the components. The first exercise, therefore, was to extract the function
 // components into separate files (each with an import statement here and an export statement in
 // the new file). The second was to extract the class components likewise.
+// The function componets were Header and Player. There was also a class component, Counter.
 
-import React from 'react';
+import React, {Component} from 'react';
+import Header from './Header' // or, ./Header.js - but node assumes .js by default
+import Player from './Player.js'
 
-const Header = (props) => {
-  return (
-    <header>
-      <h1>{ props.title }</h1>
-      <span className="stats">Players: {props.totalPlayers}</span> 
-    </header>
-  );
-}
-
-class Counter extends React.Component {
-  state = { 
-    score: 0 
-  };
-  
-  incrementScore = () => {
-    this.setState( prevState => ({
-      score: prevState.score + 1
-    }));
-  }
-
-  decrementScore = () => {
-    this.setState( prevState => ({
-      score: prevState.score - 1
-    }));
-  }
-
-  render() {
-    return (
-      <div className="counter">
-        <button className="counter-action decrement" onClick={this.decrementScore}> - </button>
-        <span className="counter-score">{ this.state.score }</span>
-        <button className="counter-action increment" onClick={this.incrementScore}> + </button>
-      </div>
-    );
-  }
-}
-  
-const Player = (props) => {
-  return (
-    <div className="player">
-      <span className="player-name">
-        <button className="remove-player" onClick={() => props.removePlayer(props.id)}>✖</button>
-        { props.name }
-      </span>
-
-      <Counter />
-    </div>
-  );
-}
-
-class App extends React.Component {
+// by importing React, {Component} above, we kind of declare Component explicitly within
+// scope, and that means we don't have to write class App extends React.Component. It's called
+// a named import.
+class App extends Component {
   state = {
     players: [
       {
