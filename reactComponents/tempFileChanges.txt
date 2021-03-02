@@ -10,3 +10,25 @@ Managing State and Data Flow
  - Seventh vid is about keeping track of state vs previous state; it reprises the sixth vid and refactors it.
 
  So: we need to create one new version of all the code for this.
+
+ Designing the stopwatch
+ -----------------------
+ - First vid sets up the basic stopwatch
+ - Second vid sets up the stopwatch state
+ - Third vid makes the stopwatch track time and looks at didMount and stuff
+ - Fourth vid handles the reset button
+ - Fifth vid handles detaching stuff and memory leaks for uncleared setInterval()'s
+
+ So: We don't major refactoring here and we can keep using the same code version.
+
+ React Component Patterns
+ ------------------------
+  - First vid looks at wasted renders. It refactors the existing stuff into a pure component.
+  - Second vid looks at destructuring props, and refactors the variable names
+  - Third vid looks at refs in the DOM, and refactors the input fields
+  - Fourth vid looks at prop validation with propTypes
+  - Fifth vid looks at static validation - that is, using Class methods
+  - Sixth vid sets up a wee challenge. This will need some refactoring too.
+
+  So: there are extensive refactors in here, and you should use the scoreboardPatterns folder.
+  Secondly, the challenge may or may not need new files - probably not, TBH.
