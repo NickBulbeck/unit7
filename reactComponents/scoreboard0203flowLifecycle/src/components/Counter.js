@@ -1,31 +1,19 @@
-import React,{Component} from 'react';
+import React from 'react';
 
-class Counter extends Component {
-    state = { 
-      score: 0 
-    };
-    
-    incrementScore = () => {
-      this.setState( prevState => ({
-        score: prevState.score + 1
-      }));
-    }
+const Counter = (props) => {
   
-    decrementScore = () => {
-      this.setState( prevState => ({
-        score: prevState.score - 1
-      }));
-    }
-  
-    render() {
-      return (
-        <div className="counter">
-          <button className="counter-action decrement" onClick={this.decrementScore}> - </button>
-          <span className="counter-score">{ this.state.score }</span>
-          <button className="counter-action increment" onClick={this.incrementScore}> + </button>
-        </div>
-      );
-    }
+// Notice the onClick events here. The onClick events aren't simply set up as
+// props.changeScore. Rather, they are each set up as an anonymous function that 
+// itself calls props.changeScore. I haven't fully got my head around why this
+// is yet, but I can see that this is what we're doing, at least.
+const index = props.index;
+    return (
+      <div className="counter">
+        <button className="counter-action decrement" onClick={()=> props.changeScore(index,-1)}> - </button>
+        <span className="counter-score">{ props.score }</span>
+        <button className="counter-action increment" onClick={()=> props.changeScore(index, 1)}> + </button>
+      </div>
+    );
   }
     
 export default Counter;
