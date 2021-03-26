@@ -78,7 +78,7 @@ class App extends Component {
     return (
       <div className="scoreboard">
         <Header 
-          title="Scoreboard" 
+          // title="My Scoreboard" - commented out because we set up a default value in Header.js
           players={this.state.players} 
         />
   
