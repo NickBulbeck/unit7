@@ -1,56 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
+// Two different approaches for class components are:
+/*
+  import React from 'react';
+  class Foadyb extends React.Component { etc
 
-const Header = (props) => {
-  return (
-    <header>
-      <h1>{ props.title }</h1>
-      <span className="stats">Players: {props.totalPlayers}</span> 
-    </header>
-  );
-}
+  and:
+  import React, { Component } from 'react'; // - this is a "named import"
+  class Foadyb extends Component { etc
+*/
+import Header from './Header.js'; // you import exactly what you exported in Header.js
+import Player from './Player.js';
+// No need to import Counter because it's nested within Player, which imports Counter itself.
 
-class Counter extends React.Component {
-  state = { 
-    score: 0 
-  };
-  
-  incrementScore = () => {
-    this.setState( prevState => ({
-      score: prevState.score + 1
-    }));
-  }
 
-  decrementScore = () => {
-    this.setState( prevState => ({
-      score: prevState.score - 1
-    }));
-  }
-
-  render() {
-    return (
-      <div className="counter">
-        <button className="counter-action decrement" onClick={this.decrementScore}> - </button>
-        <span className="counter-score">{ this.state.score }</span>
-        <button className="counter-action increment" onClick={this.incrementScore}> + </button>
-      </div>
-    );
-  }
-}
-  
-const Player = (props) => {
-  return (
-    <div className="player">
-      <span className="player-name">
-        <button className="remove-player" onClick={() => props.removePlayer(props.id)}>✖</button>
-        { props.name }
-      </span>
-
-      <Counter />
-    </div>
-  );
-}
-
-class App extends React.Component {
+class App extends Component {
   state = {
     players: [
       {
