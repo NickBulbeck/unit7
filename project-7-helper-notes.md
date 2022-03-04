@@ -8,4 +8,6 @@ down and state wherever.
 2 React components
 ==================
 How to start off with create-react-app and, thence, split the code into
-separate files.
+separate files. It starts where 1 React Basics left off, with create-react-app
+driven file structure.
+
